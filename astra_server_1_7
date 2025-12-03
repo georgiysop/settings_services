@@ -13,20 +13,16 @@ _______________________________________________________________________________
 #выполняем из привилегированного пользователя
 sudo -s
 
-#Добавляем только одну строку в /etc/apt/sources.list:
-
 #Закоментируем старые репозитории
 sed -i 's/^/# /' /etc/apt/sources.list
 
 #Добавляем только одну строку в /etc/apt/sources.list:
 echo "deb http://download.astralinux.ru/astra/stable/1.7_x86-64/repository-base/ 1.7_x86-64 main contrib non-free" >>  /etc/apt/sources.list
 
-#обновляем каталога пакетов:
+#обновляем систему:
 apt update
-
-#обновляем систему с репозитория
+apt -s dist-upgrade
 apt dist-upgrade
-
 systemctl reboot
 
 _______________________________________________________________________________
@@ -126,6 +122,10 @@ sed -i 's/^/# /' /etc/apt/sources.list
 echo "deb ftp://192.168.0.111/repo/1_7_8/base/ 1.7_x86-64 main contrib non-free" >>  /etc/apt/sources.list
 echo "deb ftp://192.168.0.111/repo/1_7_8/extended/ 1.7_x86-64 main contrib non-free" >>  /etc/apt/sources.list
 
+#обновляем систему:
+apt update
+apt -s dist-upgrade
+apt dist-upgrade
+systemctl reboot
+
 #Теперь для обновления машин 1.7 указываем эти репозитории для обновления и установки приложений. 
-
-
