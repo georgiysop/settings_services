@@ -1,0 +1,39 @@
+#Устанавливаем линукс тачку Debian/Ubuntu
+#Устанавливаем curl:
+sudo apt install curl
+
+#Устанавливаем Tailscale:
+sudo curl -fsSL https://tailscale.com/install.sh | sh
+
+#Запускаем сервис Tailscale и включаем автозапуск:
+sudo systemctl enable --now tailscaled
+
+Проверяем командой(если результат net.ipv4.ip_forward = 1, пропускаем следующие три команды):
+sudo sysctl net.ipv4.ip_forward
+
+# Включаем маршрутизацию IPv4 на постоянку:
+sudo echo 'net.ipv4.ip_forward = 1' | sudo tee /etc/sysctl.d/99-tailscale.conf
+sudo echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+
+#Авторизируемся в tailscale делаем машину выходным узлом(node, точку выхода в инет) и прокидываем subnet нужные сети:
+sudo tailscale up
+sudo tailscale set --advertise-exit-node
+sudo tailscale set --advertise-routes=192.168.1.0/24,192.168.0.0/29
+
+#Или можно сделать всё одной командой:
+sudo tailscale up --advertise-exit-node --advertise-routes=192.168.1.0/24, 192.168.0.0/29
+
+#ДОПОЛНИТЕЛЬНО ОБЯЗАТЕЛЬНОЕ В WEB АДМИНКЕ TAILSCALE:
+
+# В панели Tailscale:
+# 1. Открыть https://login.tailscale.com/admin/machines
+# 2. Найти нужный linux-сервер
+# 3. Нажать ... → Disable Key Expiry
+# 4. Нажать ... → Edit route settings и добавляем галочки у всех добавленных сетей
+# По итогу это отключит проверочный ключ node и включит прокинутые локальные сети
+
+#Проверка работоспособности сервиса:
+sudo tailscale status
+sudo tailscale ip
+sudo systemctl status tailscaled
