@@ -18,25 +18,34 @@
 Вот официальный сайт passwall2 -> https://github.com/Openwrt-Passwall/openwrt-passwall2  . 
 
 Создаем папку на роутере и закидываем туда скаченные файлы:
-#(из zip вытаскиваем: geoview-0.2.9-r1.apk, tcping-0.3-r1.apk, xray-core-26.11.9-r1.apk, sing-box-1.14.4-r1.apk)
+##############(из zip вытаскиваем: geoview-0.2.9-r1.apk, tcping-0.3-r1.apk, xray-core-26.11.9-r1.apk, sing-box-1.14.4-r1.apk)
 https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.11.11-1/packages_apk_aarch64_cortex-a53.zip 
-#(Скачиваем passwall2)
+##############(Скачиваем passwall2)
 https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.11.11-1/luci-app-passwall2-26.11.11-r1.apk
-#(Скачиваем руссификатор passwall2 (необязательно))
+##############(Скачиваем руссификатор passwall2 (необязательно))
 https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.11.11-1/luci-i18n-passwall2-ru-26.11.11.apk
 
 Выполняем последовательно команды в этой папке:
+apk add --allow-untrusted geoview-0.2.9-r1.apk
+apk add --allow-untrusted tcping-0.3-r1.apk
+apk add --allow-untrusted xray-core-26.11.9-r1.apk
+
+###############необязательно, если пользуетесь (много весит)
+apk add --allow-untrusted sing-box-1.14.4-r1.apk 
+
+###############устанавливаем passwall22(после чего обновляем веб и появляется вкладка Services)
+apk add --allow-untrusted luci-app-passwall2-26.11.11-r1.apk
+apk add --allow-untrusted luci-i18n-passwall2-ru-26.11.11.apk
 
 
-
-
-
-
-
-
-
-
-
+###############Ставим нужные зависимости:
+apk update
+apk del dnsmasq
+apk add dnsmasq-full
+apk add kmod-nf-tproxy
+apk add kmod-ipt-tproxy
+apk add kmod-nft-tproxy
+apk add kmod-nft-socket
 
 
 
@@ -45,4 +54,4 @@ https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.11.11
 https://github.com/runetfreedom/russia-v2ray-rules-dat
 
 
-P.S.  Конечно же я все файлы сразу сюда загружу, чтобы вас не гонять по сайтам, но инструкцию осттавлю.
+P.S.  Конечно же я все файлы сразу сюда загружу, чтобы вас не гонять по сайтам.
